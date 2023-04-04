@@ -1,0 +1,75 @@
+---
+title: "Troy et al (2017) Replication and Extension"
+author: "Amanda Mae Woodward"
+date: "2023-04-04"
+output: html_document
+---
+
+# Overview:
+
+We are replicating Troy et al (2017) as part of the Collaborative Replication Education Project (CREP). The original study examined whether socioeconomic status (SES) moderated the relationship between cognitive reappraisal ability (CRA) and depression symptosm. 
+
+We've also added extension hypothesis to better understand factors related to undergraduate students' mental health and cognitive reappraisal abilities. Specifically, we looked at: 
+
+- Does mindfulness impact the relationship between SES and depressive symptoms? (we think it may be a moderator or a mediator)
+- Does using a different measure of SES change whether it moderates the relationship between CRA and Depressive symptoms? 
+- Is there a relationship between neuroticism and CRA or between neuroticism and Depressive symptoms? (we think higher neuroticism will be associated with lower CRA and higher depressive symptoms)
+- Will the relationship betwen CRA and SES differ across groups? (we think it will differ)
+- Will the relationship between CRA and SES differ across gender? (we think it will differ)
+- Is there a relationship between extraversion and CRA with depressive symptoms? (higher extraversion will be associated with higher CRA and lower depressive symptoms) 
+
+
+# Replication: 
+
+## Question 1: Does SES moderate the relationship between CRA and depressive symptoms
+
+### Hypothesis: We think we will find the same relationship as Troy et al (2017). 
+
+####  Correlation
+Here are correlations for all of our variables
+
+`cor()` or `cor.test()`
+```{r Correlations}
+#correlation between SES and CRA
+
+#correlation between CRA and life stress
+
+
+```
+
+####  Multiple Regression
+
+##### Preliminary Model
+
+**- Dependent Variable:** Depressive Symptoms
+
+**- Independent Variable:** cognitive reappraisal, ses, ses * cognitive reappraisal, perceived life stress, race/ethnicity, gender, age, habitual reappraisal use 
+
+Note to self: add description of model and which column name goes with each variable 
+
+`lm(DV~ IV, data= dataset)`
+```{r}
+#preliminary model goes here
+```
+
+##### Model 1: 
+
+**- Dependent Variable:** Depressive Symptoms
+
+**- Independent Variable:** cognitive reappraisal, ses, ses * cognitive reappraisal, perceived life stress
+
+`lm(DV~ IV, data= dataset)`
+```{r}
+#preliminary model goes here
+```
+
+##### Model 2:
+
+**- Dependent variable:** depression symptoms
+
+**- Independent variable:** cognitive reappraisal ability, ses, cognitive reappraisal ability and ses interaction
+
+`lm(DV~ IV, data= dataset)`
+```{r}
+#preliminary model goes here
+```
