@@ -7,7 +7,7 @@ output: html_document
 
 # Import Data
 ```{r}
-dat <- read.csv("~/Downloads/troyetal_earlydata.csv", comment.char="#")
+dat <- read.csv("~/Downloads/troyetal_earlydata.csv", comment.char="#",  na.strings="")
 ```
 
 # Change Column Names
@@ -16,6 +16,11 @@ colnames(dat)<- c("participantID", "dot", "dobMonth", "dobDay","dobYear", "raceE
 ```
 
 # To Do: double check race/ethnicity column and gender column to make sure all info is in one column 
+```{r}
+dat$raceEthnicity<- as.factor(dat$raceEthnicity)
+dat$gender<- as.factor(dat$gender)
+```
+
 
 
 # Getting Scale Scores:
@@ -30,14 +35,14 @@ colnames(dat)<- c("participantID", "dot", "dobMonth", "dobDay","dobYear", "raceE
 7 = "strongly agree"
 ```{r}
 library(car)
-dat$CRA1<- recode(dat$CRA1, recodes = '"Strongly disagree" = 1; "Disagree" = 2; "Somewhat disagree" = 3; "Neutral" = 4; "Somewhat agree" =5; "Agree" = 6; "Strongly agree" = 7')
-dat$CRA2<- recode(dat$CRA2, recodes = '"Strongly disagree" = 1; "Disagree" = 2; "Somewhat disagree" = 3; "Neutral" = 4; "Somewhat agree" =5; "Agree" = 6; "Strongly agree" = 7')
-dat$CRA3<- recode(dat$CRA3, recodes = '"Strongly disagree" = 1; "Disagree" = 2; "Somewhat disagree" = 3; "Neutral" = 4; "Somewhat agree" =5; "Agree" = 6; "Strongly agree" = 7')
-dat$CRA4<- recode(dat$CRA4, recodes = '"Strongly disagree" = 1; "Disagree" = 2; "Somewhat disagree" = 3; "Neutral" = 4; "Somewhat agree" =5; "Agree" = 6; "Strongly agree" = 7')
-dat$CRA5<- recode(dat$CRA5, recodes = '"Strongly disagree" = 1; "Disagree" = 2; "Somewhat disagree" = 3; "Neutral" = 4; "Somewhat agree" =5; "Agree" = 6; "Strongly agree" = 7')
-dat$CRA6<- recode(dat$CRA6, recodes = '"Strongly disagree" = 1; "Disagree" = 2; "Somewhat disagree" = 3; "Neutral" = 4; "Somewhat agree" =5; "Agree" = 6; "Strongly agree" = 7')
-dat$CRA7<- recode(dat$CRA7, recodes = '"Strongly disagree" = 1; "Disagree" = 2; "Somewhat disagree" = 3; "Neutral" = 4; "Somewhat agree" =5; "Agree" = 6; "Strongly agree" = 7')
-dat$CRA8<- recode(dat$CRA8, recodes = '"Strongly disagree" = 1; "Disagree" = 2; "Somewhat disagree" = 3; "Neutral" = 4; "Somewhat agree" =5; "Agree" = 6; "Strongly agree" = 7')
+dat$CRA1<- car::recode(dat$CRA1, recodes = '"Strongly disagree" = 1; "Disagree" = 2; "Somewhat disagree" = 3; "Neutral" = 4; "Somewhat agree" =5; "Agree" = 6; "Strongly agree" = 7')
+dat$CRA2<- car::recode(dat$CRA2, recodes = '"Strongly disagree" = 1; "Disagree" = 2; "Somewhat disagree" = 3; "Neutral" = 4; "Somewhat agree" =5; "Agree" = 6; "Strongly agree" = 7')
+dat$CRA3<- car::recode(dat$CRA3, recodes = '"Strongly disagree" = 1; "Disagree" = 2; "Somewhat disagree" = 3; "Neutral" = 4; "Somewhat agree" =5; "Agree" = 6; "Strongly agree" = 7')
+dat$CRA4<- car::recode(dat$CRA4, recodes = '"Strongly disagree" = 1; "Disagree" = 2; "Somewhat disagree" = 3; "Neutral" = 4; "Somewhat agree" =5; "Agree" = 6; "Strongly agree" = 7')
+dat$CRA5<- car::recode(dat$CRA5, recodes = '"Strongly disagree" = 1; "Disagree" = 2; "Somewhat disagree" = 3; "Neutral" = 4; "Somewhat agree" =5; "Agree" = 6; "Strongly agree" = 7')
+dat$CRA6<- car::recode(dat$CRA6, recodes = '"Strongly disagree" = 1; "Disagree" = 2; "Somewhat disagree" = 3; "Neutral" = 4; "Somewhat agree" =5; "Agree" = 6; "Strongly agree" = 7')
+dat$CRA7<- car::recode(dat$CRA7, recodes = '"Strongly disagree" = 1; "Disagree" = 2; "Somewhat disagree" = 3; "Neutral" = 4; "Somewhat agree" =5; "Agree" = 6; "Strongly agree" = 7')
+dat$CRA8<- car::recode(dat$CRA8, recodes = '"Strongly disagree" = 1; "Disagree" = 2; "Somewhat disagree" = 3; "Neutral" = 4; "Somewhat agree" =5; "Agree" = 6; "Strongly agree" = 7')
 ```
 
 # PSS: 4 items
@@ -50,10 +55,10 @@ dat$CRA8<- recode(dat$CRA8, recodes = '"Strongly disagree" = 1; "Disagree" = 2; 
 5 = "Very Often"
 
 ```{r}
-dat$PSS1<- recode(dat$PSS1, recodes = '"Never" = 1; "Almost Never" = 2; "Sometimes" = 3; "Fairly Often" = 4; "Very Often" = 5')
-dat$PSS2<- recode(dat$PSS2, recodes = '"Never" = 5; "Almost Never" = 4; "Sometimes" = 3; "Fairly Often" = 2; "Very Often" = 1')
-dat$PSS3<- recode(dat$PSS3, recodes = '"Never" = 5; "Almost Never" = 4; "Sometimes" = 3; "Fairly Often" = 2; "Very Often" = 1')
-dat$PSS4<- recode(dat$PSS4, recodes = '"Never" = 1; "Almost Never" = 2; "Sometimes" = 3; "Fairly Often" = 4; "Very Often" = 5')
+dat$PSS1<- car::recode(dat$PSS1, recodes = '"Never" = 1; "Almost Never" = 2; "Sometimes" = 3; "Fairly Often" = 4; "Very Often" = 5')
+dat$PSS2<- car::recode(dat$PSS2, recodes = '"Never" = 5; "Almost Never" = 4; "Sometimes" = 3; "Fairly Often" = 2; "Very Often" = 1')
+dat$PSS3<- car::recode(dat$PSS3, recodes = '"Never" = 5; "Almost Never" = 4; "Sometimes" = 3; "Fairly Often" = 2; "Very Often" = 1')
+dat$PSS4<- car::recode(dat$PSS4, recodes = '"Never" = 1; "Almost Never" = 2; "Sometimes" = 3; "Fairly Often" = 4; "Very Often" = 5')
 ```
 
 # Depressive Symptoms: 5 items
@@ -65,11 +70,11 @@ dat$PSS4<- recode(dat$PSS4, recodes = '"Never" = 1; "Almost Never" = 2; "Sometim
 4 = "Most or all of the time (5-7 days)"
 
 ```{r}
-dat$DS1<- recode(dat$DS1, recodes = '"Rarely or none of the time (less than 1 day)" = 1; "Some or a little of the time (1-2 days)" = 2; "Occasionally or moderate amount of time (3-4 days)" = 3; "Most or all of the time (5-7 days)" = 4')
-dat$DS2<- recode(dat$DS2, recodes = '"Rarely or none of the time (less than 1 day)" = 1; "Some or a little of the time (1-2 days)" = 2; "Occasionally or moderate amount of time (3-4 days)" = 3; "Most or all of the time (5-7 days)" = 4')
-dat$DS3<- recode(dat$DS3, recodes = '"Rarely or none of the time (less than 1 day)" = 1; "Some or a little of the time (1-2 days)" = 2; "Occasionally or moderate amount of time (3-4 days)" = 3; "Most or all of the time (5-7 days)" = 4')
-dat$DS4<- recode(dat$DS4, recodes = '"Rarely or none of the time (less than 1 day)" = 1; "Some or a little of the time (1-2 days)" = 2; "Occasionally or moderate amount of time (3-4 days)" = 3; "Most or all of the time (5-7 days)" = 4')
-dat$DS5<- recode(dat$DS5, recodes = '"Rarely or none of the time (less than 1 day)" = 1; "Some or a little of the time (1-2 days)" = 2; "Occasionally or moderate amount of time (3-4 days)" = 3; "Most or all of the time (5-7 days)" = 4')
+dat$DS1<- car::recode(dat$DS1, recodes = '"Rarely or none of the time (less than 1 day)" = 1; "Some or a little of the time (1-2 days)" = 2; "Occasionally or moderate amount of time (3-4 days)" = 3; "Most or all of the time (5-7 days)" = 4')
+dat$DS2<- car::recode(dat$DS2, recodes = '"Rarely or none of the time (less than 1 day)" = 1; "Some or a little of the time (1-2 days)" = 2; "Occasionally or moderate amount of time (3-4 days)" = 3; "Most or all of the time (5-7 days)" = 4')
+dat$DS3<- car::recode(dat$DS3, recodes = '"Rarely or none of the time (less than 1 day)" = 1; "Some or a little of the time (1-2 days)" = 2; "Occasionally or moderate amount of time (3-4 days)" = 3; "Most or all of the time (5-7 days)" = 4')
+dat$DS4<- car::recode(dat$DS4, recodes = '"Rarely or none of the time (less than 1 day)" = 1; "Some or a little of the time (1-2 days)" = 2; "Occasionally or moderate amount of time (3-4 days)" = 3; "Most or all of the time (5-7 days)" = 4')
+dat$DS5<- car::recode(dat$DS5, recodes = '"Rarely or none of the time (less than 1 day)" = 1; "Some or a little of the time (1-2 days)" = 2; "Occasionally or moderate amount of time (3-4 days)" = 3; "Most or all of the time (5-7 days)" = 4')
 ```
 
 
@@ -82,12 +87,13 @@ Somewhat agree =5
 Agree = 6
 Strongly Agree =7
 ```{r}
-dat$HCRA1 <- recode(dat$HCRA1, recodes = '"Strongly disagree" = 1; "Disagree" = 2; "Somewhat disagree" = 3; "Neither agree nor disagree" = 4; "Somewhat agree" = 5; "Agree" = 6; "Strongly agree" = 7')
-dat$HCRA2 <- recode(dat$HCRA2, recodes = '"Strongly disagree" = 1; "Disagree" = 2; "Somewhat disagree" = 3; "Neither agree nor disagree" = 4; "Somewhat agree" = 5; "Agree" = 6; "Strongly agree" = 7')
-dat$HCRA3 <- recode(dat$HCRA3, recodes = '"Strongly disagree" = 1; "Disagree" = 2; "Somewhat disagree" = 3; "Neither agree nor disagree" = 4; "Somewhat agree" = 5; "Agree" = 6; "Strongly agree" = 7')
-dat$HCRA4 <- recode(dat$HCRA4, recodes = '"Strongly disagree" = 1; "Disagree" = 2; "Somewhat disagree" = 3; "Neither agree nor disagree" = 4; "Somewhat agree" = 5; "Agree" = 6; "Strongly agree" = 7')
-dat$HCRA5 <- recode(dat$HCRA5, recodes = '"Strongly disagree" = 1; "Disagree" = 2; "Somewhat disagree" = 3; "Neither agree nor disagree" = 4; "Somewhat agree" = 5; "Agree" = 6; "Strongly agree" = 7')
-dat$HCRA6 <- recode(dat$HCRA6, recodes = '"Strongly disagree" = 1; "Disagree" = 2; "Somewhat disagree" = 3; "Neither agree nor disagree" = 4; "Somewhat agree" = 5; "Agree" = 6; "Strongly agree" = 7’)
+dat$HCRA1 <- car::recode(dat$HCRA1, recodes = '"Strongly disagree" = 1; "Disagree" = 2; "Somewhat disagree" = 3; "Neither agree nor disagree" = 4; "Somewhat agree" = 5; "Agree" = 6; "Strongly agree" = 7')
+dat$HCRA2 <- car::recode(dat$HCRA2, recodes = '"Strongly disagree" = 1; "Disagree" = 2; "Somewhat disagree" = 3; "Neither agree nor disagree" = 4; "Somewhat agree" = 5; "Agree" = 6; "Strongly agree" = 7')
+dat$HCRA3 <- car::recode(dat$HCRA3, recodes = '"Strongly disagree" = 1; "Disagree" = 2; "Somewhat disagree" = 3; "Neither agree nor disagree" = 4; "Somewhat agree" = 5; "Agree" = 6; "Strongly agree" = 7')
+dat$HCRA4 <- car::recode(dat$HCRA4, recodes = '"Strongly disagree" = 1; "Disagree" = 2; "Somewhat disagree" = 3; "Neither agree nor disagree" = 4; "Somewhat agree" = 5; "Agree" = 6; "Strongly agree" = 7')
+dat$HCRA5 <- car::recode(dat$HCRA5, recodes = '"Strongly disagree" = 1; "Disagree" = 2; "Somewhat disagree" = 3; "Neither agree nor disagree" = 4; "Somewhat agree" = 5; "Agree" = 6; "Strongly agree" = 7')
+
+dat$HCRA6 <- car::recode(dat$HCRA6, recodes = ' "Strongly disagree" = 1; "Disagree" = 2; "Somewhat disagree" = 3; "Neither agree nor disagree" = 4; "Somewhat agree" = 5; "Agree" = 6; "Strongly agree" = 7')
 ```
 
 # Mindfulness Questionnaire
@@ -99,31 +105,31 @@ very frequently = 5
 almost always =6
 
 ```{r}
-dat$MQ1 <- recode(dat$MQ1, recodes = '"Almost Never" = 1; "Very Infrequently" = 2; "Somewhat Infrequently" = 3; "Somewhat Frequently" = 4; "Very Frequently" = 5; "Almost Always" = 6')
-dat$MQ2 <- recode(dat$MQ2, recodes = '"Almost Never" = 1; "Very Infrequently" = 2; "Somewhat Infrequently" = 3; "Somewhat Frequently" = 4; "Very Frequently" = 5; "Almost Always" = 6')
-dat$MQ3 <- recode(dat$MQ3, recodes = '"Almost Never" = 1; "Very Infrequently" = 2; "Somewhat Infrequently" = 3; "Somewhat Frequently" = 4; "Very Frequently" = 5; "Almost Always" = 6')
-dat$MQ4 <- recode(dat$MQ4, recodes = '"Almost Never" = 1; "Very Infrequently" = 2; "Somewhat Infrequently" = 3; "Somewhat Frequently" = 4; "Very Frequently" = 5; "Almost Always" = 6')
-dat$MQ5 <- recode(dat$MQ5, recodes = '"Almost Never" = 1; "Very Infrequently" = 2; "Somewhat Infrequently" = 3; "Somewhat Frequently" = 4; "Very Frequently" = 5; "Almost Always" = 6')
-dat$MQ6 <- recode(dat$MQ6, recodes = '"Almost Never" = 1; "Very Infrequently" = 2; "Somewhat Infrequently" = 3; "Somewhat Frequently" = 4; "Very Frequently" = 5; "Almost Always" = 6')
-dat$MQ7 <- recode(dat$MQ7, recodes = '"Almost Never" = 1; "Very Infrequently" = 2; "Somewhat Infrequently" = 3; "Somewhat Frequently" = 4; "Very Frequently" = 5; "Almost Always" = 6')
-dat$MQ8 <- recode(dat$MQ8, recodes = '"Almost Never" = 1; "Very Infrequently" = 2; "Somewhat Infrequently" = 3; "Somewhat Frequently" = 4; "Very Frequently" = 5; "Almost Always" = 6')
-dat$MQ9 <- recode(dat$MQ9, recodes = '"Almost Never" = 1; "Very Infrequently" = 2; "Somewhat Infrequently" = 3; "Somewhat Frequently" = 4; "Very Frequently" = 5; "Almost Always" = 6')
-dat$MQ10 <- recode(dat$MQ10, recodes = '"Almost Never" = 1; "Very Infrequently" = 2; "Somewhat Infrequently" = 3; "Somewhat Frequently" = 4; "Very Frequently" = 5; "Almost Always" = 6')
-dat$MQ11 <- recode(dat$MQ11, recodes = '"Almost Never" = 1; "Very Infrequently" = 2; "Somewhat Infrequently" = 3; "Somewhat Frequently" = 4; "Very Frequently" = 5; "Almost Always" = 6')
-dat$MQ12 <- recode(dat$MQ12, recodes = '"Almost Never" = 1; "Very Infrequently" = 2; "Somewhat Infrequently" = 3; "Somewhat Frequently" = 4; "Very Frequently" = 5; "Almost Always" = 6')
-dat$MQ13 <- recode(dat$MQ13, recodes = '"Almost Never" = 1; "Very Infrequently" = 2; "Somewhat Infrequently" = 3; "Somewhat Frequently" = 4; "Very Frequently" = 5; "Almost Always" = 6')
-dat$MQ14 <- recode(dat$MQ14, recodes = '"Almost Never" = 1; "Very Infrequently" = 2; "Somewhat Infrequently" = 3; "Somewhat Frequently" = 4; "Very Frequently" = 5; "Almost Always" = 6')
-dat$MQ15 <- recode(dat$MQ15, recodes = '"Almost Never" = 1; "Very Infrequently" = 2; "Somewhat Infrequently" = 3; "Somewhat Frequently" = 4; "Very Frequently" = 5; "Almost Always" = 6')
+dat$MQ1 <- car::recode(dat$MQ1, recodes = ' "Almost Never" = 1; "Very Infrequently" = 2; "Somewhat Infrequently" = 3; "Somewhat Frequently" = 4; "Very Frequently" = 5; "Almost Always" = 6')
+dat$MQ2 <- car::recode(dat$MQ2, recodes = '"Almost Never" = 1; "Very Infrequently" = 2; "Somewhat Infrequently" = 3; "Somewhat Frequently" = 4; "Very Frequently" = 5; "Almost Always" = 6')
+dat$MQ3 <- car::recode(dat$MQ3, recodes = '"Almost Never" = 1; "Very Infrequently" = 2; "Somewhat Infrequently" = 3; "Somewhat Frequently" = 4; "Very Frequently" = 5; "Almost Always" = 6')
+dat$MQ4 <- car::recode(dat$MQ4, recodes = '"Almost Never" = 1; "Very Infrequently" = 2; "Somewhat Infrequently" = 3; "Somewhat Frequently" = 4; "Very Frequently" = 5; "Almost Always" = 6')
+dat$MQ5 <- car::recode(dat$MQ5, recodes = '"Almost Never" = 1; "Very Infrequently" = 2; "Somewhat Infrequently" = 3; "Somewhat Frequently" = 4; "Very Frequently" = 5; "Almost Always" = 6')
+dat$MQ6 <- car::recode(dat$MQ6, recodes = '"Almost Never" = 1; "Very Infrequently" = 2; "Somewhat Infrequently" = 3; "Somewhat Frequently" = 4; "Very Frequently" = 5; "Almost Always" = 6')
+dat$MQ7 <- car::recode(dat$MQ7, recodes = '"Almost Never" = 1; "Very Infrequently" = 2; "Somewhat Infrequently" = 3; "Somewhat Frequently" = 4; "Very Frequently" = 5; "Almost Always" = 6')
+dat$MQ8 <- car::recode(dat$MQ8, recodes = '"Almost Never" = 1; "Very Infrequently" = 2; "Somewhat Infrequently" = 3; "Somewhat Frequently" = 4; "Very Frequently" = 5; "Almost Always" = 6')
+dat$MQ9 <- car::recode(dat$MQ9, recodes = '"Almost Never" = 1; "Very Infrequently" = 2; "Somewhat Infrequently" = 3; "Somewhat Frequently" = 4; "Very Frequently" = 5; "Almost Always" = 6')
+dat$MQ10 <- car::recode(dat$MQ10, recodes = '"Almost Never" = 1; "Very Infrequently" = 2; "Somewhat Infrequently" = 3; "Somewhat Frequently" = 4; "Very Frequently" = 5; "Almost Always" = 6')
+dat$MQ11 <- car::recode(dat$MQ11, recodes = '"Almost Never" = 1; "Very Infrequently" = 2; "Somewhat Infrequently" = 3; "Somewhat Frequently" = 4; "Very Frequently" = 5; "Almost Always" = 6')
+dat$MQ12 <- car::recode(dat$MQ12, recodes = '"Almost Never" = 1; "Very Infrequently" = 2; "Somewhat Infrequently" = 3; "Somewhat Frequently" = 4; "Very Frequently" = 5; "Almost Always" = 6')
+dat$MQ13 <- car::recode(dat$MQ13, recodes = '"Almost Never" = 1; "Very Infrequently" = 2; "Somewhat Infrequently" = 3; "Somewhat Frequently" = 4; "Very Frequently" = 5; "Almost Always" = 6')
+dat$MQ14 <- car::recode(dat$MQ14, recodes = '"Almost Never" = 1; "Very Infrequently" = 2; "Somewhat Infrequently" = 3; "Somewhat Frequently" = 4; "Very Frequently" = 5; "Almost Always" = 6')
+dat$MQ15 <- car::recode(dat$MQ15, recodes = '"Almost Never" = 1; "Very Infrequently" = 2; "Somewhat Infrequently" = 3; "Somewhat Frequently" = 4; "Very Frequently" = 5; "Almost Always" = 6')
 ```
 
 # BFI 
 #Extraversion normal subscale
 ```{r}
-dat$BFI1 <- recode(dat$BFI1, recodes = '"Disagree a lot" = 1; "Disagree" = 2; "Neutral" = 3; "Agree" = 4; "Agree a lot" = 5')
-dat$BFI11 <- recode(dat$BFI11, recodes = '"Disagree a lot" = 1; "Disagree" = 2; "Neutral" = 3; "Agree" = 4; "Agree a lot" = 5')
-dat$BFI16 <- recode(dat$BFI16, recodes = '"Disagree a lot" = 1; "Disagree" = 2; "Neutral" = 3; "Agree" = 4; "Agree a lot" = 5')
-dat$BFI26 <- recode(dat$BFI26, recodes = '"Disagree a lot" = 1; "Disagree" = 2; "Neutral" = 3; "Agree" = 4; "Agree a lot" = 5')
-dat$BFI36 <- recode(dat$BFI36, recodes = '"Disagree a lot" = 1; "Disagree" = 2; "Neutral" = 3; "Agree" = 4; "Agree a lot" = 5')
+dat$BFI1 <- car::recode(dat$BFI1, recodes = '"Disagree a lot" = 1; "Disagree" = 2; "Neutral" = 3; "Agree" = 4; "Agree a lot" = 5')
+dat$BFI11 <- car::recode(dat$BFI11, recodes = '"Disagree a lot" = 1; "Disagree" = 2; "Neutral" = 3; "Agree" = 4; "Agree a lot" = 5')
+dat$BFI16 <- car::recode(dat$BFI16, recodes = '"Disagree a lot" = 1; "Disagree" = 2; "Neutral" = 3; "Agree" = 4; "Agree a lot" = 5')
+dat$BFI26 <- car::recode(dat$BFI26, recodes = '"Disagree a lot" = 1; "Disagree" = 2; "Neutral" = 3; "Agree" = 4; "Agree a lot" = 5')
+dat$BFI36 <- car::recode(dat$BFI36, recodes = '"Disagree a lot" = 1; "Disagree" = 2; "Neutral" = 3; "Agree" = 4; "Agree a lot" = 5')
 ```
 #extraversion inverse subscale
 5= "disagree a lot"
@@ -132,71 +138,88 @@ dat$BFI36 <- recode(dat$BFI36, recodes = '"Disagree a lot" = 1; "Disagree" = 2; 
 2="agree"
 1="agree a lot"
 ```{r}
-dat$BFI6 <- recode(dat$BFI6, recodes = '"Disagree a lot" = 5; "Disagree" = 4; "Neutral" = 3; "Agree" = 2; "Agree a lot" = 1')
-dat$BFI21 <- recode(dat$BFI21, recodes = '"Disagree a lot" = 5; "Disagree" = 4; "Neutral" = 3; "Agree" = 2; "Agree a lot" = 1')
-dat$BFI31<- recode(dat$BFI31, recodes = '"Disagree a lot" = 5; "Disagree" = 4; "Neutral" = 3; "Agree" = 2; "Agree a lot" = 1')
+dat$BFI6 <- car::recode(dat$BFI6, recodes = '"Disagree a lot" = 5; "Disagree" = 4; "Neutral" = 3; "Agree" = 2; "Agree a lot" = 1')
+dat$BFI21 <- car::recode(dat$BFI21, recodes = '"Disagree a lot" = 5; "Disagree" = 4; "Neutral" = 3; "Agree" = 2; "Agree a lot" = 1')
+dat$BFI31<- car::recode(dat$BFI31, recodes = '"Disagree a lot" = 5; "Disagree" = 4; "Neutral" = 3; "Agree" = 2; "Agree a lot" = 1')
 ```
 #Agreeableness normal subscale
 ```{r}
-dat$BFI7 <- recode(dat$BFI7, recodes = '"Disagree a lot" = 1; "Disagree" = 2; "Neutral" = 3; "Agree" = 4; "Agree a lot" = 5')
-dat$BFI17 <- recode(dat$BFI17, recodes = '"Disagree a lot" = 1; "Disagree" = 2; "Neutral" = 3; "Agree" = 4; "Agree a lot" = 5')
-dat$BFI22 <- recode(dat$BFI22, recodes = '"Disagree a lot" = 1; "Disagree" = 2; "Neutral" = 3; "Agree" = 4; "Agree a lot" = 5')
-dat$BFI32 <- recode(dat$BFI32, recodes = '"Disagree a lot" = 1; "Disagree" = 2; "Neutral" = 3; "Agree" = 4; "Agree a lot" = 5')
-dat$BFI42 <- recode(dat$BFI42, recodes = '"Disagree a lot" = 1; "Disagree" = 2; "Neutral" = 3; "Agree" = 4; "Agree a lot" = 5')
+dat$BFI7 <- car::recode(dat$BFI7, recodes = '"Disagree a lot" = 1; "Disagree" = 2; "Neutral" = 3; "Agree" = 4; "Agree a lot" = 5')
+dat$BFI17 <- car::recode(dat$BFI17, recodes = '"Disagree a lot" = 1; "Disagree" = 2; "Neutral" = 3; "Agree" = 4; "Agree a lot" = 5')
+dat$BFI22 <- car::recode(dat$BFI22, recodes = '"Disagree a lot" = 1; "Disagree" = 2; "Neutral" = 3; "Agree" = 4; "Agree a lot" = 5')
+dat$BFI32 <- car::recode(dat$BFI32, recodes = '"Disagree a lot" = 1; "Disagree" = 2; "Neutral" = 3; "Agree" = 4; "Agree a lot" = 5')
+dat$BFI42 <- car::recode(dat$BFI42, recodes = '"Disagree a lot" = 1; "Disagree" = 2; "Neutral" = 3; "Agree" = 4; "Agree a lot" = 5')
 ```
 #Agreeableness inverse subscale
 ```{r}
-dat$BFI2 <- recode(dat$BFI2, recodes = '"Disagree a lot" = 5; "Disagree" = 4; "Neutral" = 3; "Agree" = 2; "Agree a lot" = 1')
-dat$BFI12 <- recode(dat$BFI12, recodes = '"Disagree a lot" = 5; "Disagree" = 4; "Neutral" = 3; "Agree" = 2; "Agree a lot" = 1')
-dat$BFI27 <- recode(dat$BFI27, recodes = '"Disagree a lot" = 5; "Disagree" = 4; "Neutral" = 3; "Agree" = 2; "Agree a lot" = 1')
-dat$BFI37 <- recode(dat$BFI37, recodes = '"Disagree a lot" = 5; "Disagree" = 4; "Neutral" = 3; "Agree" = 2; "Agree a lot" = 1')
+dat$BFI2 <- car::recode(dat$BFI2, recodes = '"Disagree a lot" = 5; "Disagree" = 4; "Neutral" = 3; "Agree" = 2; "Agree a lot" = 1')
+dat$BFI12 <- car::recode(dat$BFI12, recodes = '"Disagree a lot" = 5; "Disagree" = 4; "Neutral" = 3; "Agree" = 2; "Agree a lot" = 1')
+dat$BFI27 <- car::recode(dat$BFI27, recodes = '"Disagree a lot" = 5; "Disagree" = 4; "Neutral" = 3; "Agree" = 2; "Agree a lot" = 1')
+dat$BFI37 <- car::recode(dat$BFI37, recodes = '"Disagree a lot" = 5; "Disagree" = 4; "Neutral" = 3; "Agree" = 2; "Agree a lot" = 1')
 ```
 #Conscientiousness normal Subscale
 ```{r}
-dat$BFI3 <- recode(dat$BFI3, recodes = '"Disagree a lot" = 1; "Disagree" = 2; "Neutral" = 3; "Agree" = 4; "Agree a lot" = 5')
-dat$BFI13 <- recode(dat$BFI13, recodes = '"Disagree a lot" = 1; "Disagree" = 2; "Neutral" = 3; "Agree" = 4; "Agree a lot" = 5')
-dat$BFI28 <- recode(dat$BFI28, recodes = '"Disagree a lot" = 1; "Disagree" = 2; "Neutral" = 3; "Agree" = 4; "Agree a lot" = 5')
-dat$BFI33 <- recode(dat$BFI33, recodes = '"Disagree a lot" = 1; "Disagree" = 2; "Neutral" = 3; "Agree" = 4; "Agree a lot" = 5')
-dat$BFI38 <- recode(dat$BFI38, recodes = '"Disagree a lot" = 1; "Disagree" = 2; "Neutral" = 3; "Agree" = 4; "Agree a lot" = 5')
+dat$BFI3 <- car::recode(dat$BFI3, recodes = '"Disagree a lot" = 1; "Disagree" = 2; "Neutral" = 3; "Agree" = 4; "Agree a lot" = 5')
+dat$BFI13 <- car::recode(dat$BFI13, recodes = '"Disagree a lot" = 1; "Disagree" = 2; "Neutral" = 3; "Agree" = 4; "Agree a lot" = 5')
+dat$BFI28 <- car::recode(dat$BFI28, recodes = '"Disagree a lot" = 1; "Disagree" = 2; "Neutral" = 3; "Agree" = 4; "Agree a lot" = 5')
+dat$BFI33 <- car::recode(dat$BFI33, recodes = '"Disagree a lot" = 1; "Disagree" = 2; "Neutral" = 3; "Agree" = 4; "Agree a lot" = 5')
+dat$BFI38 <- car::recode(dat$BFI38, recodes = '"Disagree a lot" = 1; "Disagree" = 2; "Neutral" = 3; "Agree" = 4; "Agree a lot" = 5')
 ```
 #Conscientiousness inverse Subscale
 ```{r}
-dat$BFI8 <- recode(dat$BFI8, recodes = '"Disagree a lot" = 5; "Disagree" = 4; "Neutral" = 3; "Agree" = 2; "Agree a lot" = 1')
-dat$BFI18 <- recode(dat$BFI18, recodes = '"Disagree a lot" = 5; "Disagree" = 4; "Neutral" = 3; "Agree" = 2; "Agree a lot" = 1')
-dat$BFI23 <- recode(dat$BFI23, recodes = '"Disagree a lot" = 5; "Disagree" = 4; "Neutral" = 3; "Agree" = 2; "Agree a lot" = 1')
-dat$BFI43 <- recode(dat$BFI43, recodes = '"Disagree a lot" = 5; "Disagree" = 4; "Neutral" = 3; "Agree" = 2; "Agree a lot" = 1')
+dat$BFI8 <- car::recode(dat$BFI8, recodes = '"Disagree a lot" = 5; "Disagree" = 4; "Neutral" = 3; "Agree" = 2; "Agree a lot" = 1')
+dat$BFI18 <- car::recode(dat$BFI18, recodes = '"Disagree a lot" = 5; "Disagree" = 4; "Neutral" = 3; "Agree" = 2; "Agree a lot" = 1')
+dat$BFI23 <- car::recode(dat$BFI23, recodes = '"Disagree a lot" = 5; "Disagree" = 4; "Neutral" = 3; "Agree" = 2; "Agree a lot" = 1')
+dat$BFI43 <- car::recode(dat$BFI43, recodes = '"Disagree a lot" = 5; "Disagree" = 4; "Neutral" = 3; "Agree" = 2; "Agree a lot" = 1')
 ```
 
 #Neuroticism normal subscale
 ```{r}
-dat$BFI4 <- recode(dat$BFI4, recodes = '"Disagree a lot" = 1; "Disagree" = 2; "Neutral" = 3; "Agree" = 4; "Agree a lot" = 5')
-dat$BFI14 <- recode(dat$BFI14, recodes = '"Disagree a lot" = 1; "Disagree" = 2; "Neutral" = 3; "Agree" = 4; "Agree a lot" = 5')
-dat$BFI19 <- recode(dat$BFI19, recodes = '"Disagree a lot" = 1; "Disagree" = 2; "Neutral" = 3; "Agree" = 4; "Agree a lot" = 5')
-dat$BFI29 <- recode(dat$BFI29, recodes = '"Disagree a lot" = 1; "Disagree" = 2; "Neutral" = 3; "Agree" = 4; "Agree a lot" = 5')
-dat$BFI39 <- recode(dat$BFI39, recodes = '"Disagree a lot" = 1; "Disagree" = 2; "Neutral" = 3; "Agree" = 4; "Agree a lot" = 5')
+dat$BFI4 <- car::recode(dat$BFI4, recodes = '"Disagree a lot" = 1; "Disagree" = 2; "Neutral" = 3; "Agree" = 4; "Agree a lot" = 5')
+dat$BFI14 <- car::recode(dat$BFI14, recodes = '"Disagree a lot" = 1; "Disagree" = 2; "Neutral" = 3; "Agree" = 4; "Agree a lot" = 5')
+dat$BFI19 <- car::recode(dat$BFI19, recodes = '"Disagree a lot" = 1; "Disagree" = 2; "Neutral" = 3; "Agree" = 4; "Agree a lot" = 5')
+dat$BFI29 <- car::recode(dat$BFI29, recodes = '"Disagree a lot" = 1; "Disagree" = 2; "Neutral" = 3; "Agree" = 4; "Agree a lot" = 5')
+dat$BFI39 <- car::recode(dat$BFI39, recodes = '"Disagree a lot" = 1; "Disagree" = 2; "Neutral" = 3; "Agree" = 4; "Agree a lot" = 5')
 ```
 
 #Neuroticism inverse subscale
 ```{r}
-dat$BFI9 <- recode(dat$BFI9, recodes = '"Disagree a lot" = 5; "Disagree" = 4; "Neutral" = 3; "Agree" = 2; "Agree a lot" = 1')
-dat$BFI24 <- recode(dat$BFI24, recodes = '"Disagree a lot" = 5; "Disagree" = 4; "Neutral" = 3; "Agree" = 2; "Agree a lot" = 1')
-dat$BFI34 <- recode(dat$BFI34, recodes = '"Disagree a lot" = 5; "Disagree" = 4; "Neutral" = 3; "Agree" = 2; "Agree a lot" = 1')
+dat$BFI9 <- car::recode(dat$BFI9, recodes = '"Disagree a lot" = 5; "Disagree" = 4; "Neutral" = 3; "Agree" = 2; "Agree a lot" = 1')
+dat$BFI24 <- car::recode(dat$BFI24, recodes = '"Disagree a lot" = 5; "Disagree" = 4; "Neutral" = 3; "Agree" = 2; "Agree a lot" = 1')
+dat$BFI34 <- car::recode(dat$BFI34, recodes = '"Disagree a lot" = 5; "Disagree" = 4; "Neutral" = 3; "Agree" = 2; "Agree a lot" = 1')
 ```
 
 #Openess normal subscale
 ```{r}
-dat$BFI5 <- recode(dat$BFI5, recodes = '"Disagree a lot" = 1; "Disagree" = 2; "Neutral" = 3; "Agree" = 4; "Agree a lot" = 5')
-dat$BFI10 <- recode(dat$BFI10, recodes = '"Disagree a lot" = 1; "Disagree" = 2; "Neutral" = 3; "Agree" = 4; "Agree a lot" = 5')
-dat$BFI15 <- recode(dat$BFI15, recodes = '"Disagree a lot" = 1; "Disagree" = 2; "Neutral" = 3; "Agree" = 4; "Agree a lot" = 5')
-dat$BFI20 <- recode(dat$BFI20, recodes = '"Disagree a lot" = 1; "Disagree" = 2; "Neutral" = 3; "Agree" = 4; "Agree a lot" = 5')
-dat$BFI25 <- recode(dat$BFI25, recodes = '"Disagree a lot" = 1; "Disagree" = 2; "Neutral" = 3; "Agree" = 4; "Agree a lot" = 5')
-dat$BFI30 <- recode(dat$BFI30, recodes = '"Disagree a lot" = 1; "Disagree" = 2; "Neutral" = 3; "Agree" = 4; "Agree a lot" = 5')
-dat$BFI40 <- recode(dat$BFI40, recodes = '"Disagree a lot" = 1; "Disagree" = 2; "Neutral" = 3; "Agree" = 4; "Agree a lot" = 5')
-dat$BFI44 <- recode(dat$BFI44, recodes = '"Disagree a lot" = 1; "Disagree" = 2; "Neutral" = 3; "Agree" = 4; "Agree a lot" = 5')
+dat$BFI5 <- car::recode(dat$BFI5, recodes = '"Disagree a lot" = 1; "Disagree" = 2; "Neutral" = 3; "Agree" = 4; "Agree a lot" = 5')
+dat$BFI10 <- car::recode(dat$BFI10, recodes = '"Disagree a lot" = 1; "Disagree" = 2; "Neutral" = 3; "Agree" = 4; "Agree a lot" = 5')
+dat$BFI15 <- car::recode(dat$BFI15, recodes = '"Disagree a lot" = 1; "Disagree" = 2; "Neutral" = 3; "Agree" = 4; "Agree a lot" = 5')
+dat$BFI20 <- car::recode(dat$BFI20, recodes = '"Disagree a lot" = 1; "Disagree" = 2; "Neutral" = 3; "Agree" = 4; "Agree a lot" = 5')
+dat$BFI25 <- car::recode(dat$BFI25, recodes = '"Disagree a lot" = 1; "Disagree" = 2; "Neutral" = 3; "Agree" = 4; "Agree a lot" = 5')
+dat$BFI30 <- car::recode(dat$BFI30, recodes = '"Disagree a lot" = 1; "Disagree" = 2; "Neutral" = 3; "Agree" = 4; "Agree a lot" = 5')
+dat$BFI40 <- car::recode(dat$BFI40, recodes = '"Disagree a lot" = 1; "Disagree" = 2; "Neutral" = 3; "Agree" = 4; "Agree a lot" = 5')
+dat$BFI44 <- car::recode(dat$BFI44, recodes = '"Disagree a lot" = 1; "Disagree" = 2; "Neutral" = 3; "Agree" = 4; "Agree a lot" = 5')
 ```
 
 #Openess inverse subscale
 ```{r}
-dat$BFI35 <- recode(dat$BFI35, recodes = '"Disagree a lot" = 5; "Disagree" = 4; "Neutral" = 3; "Agree" = 2; "Agree a lot" = 1')
-dat$BFI41 <- recode(dat$BFI41, recodes = '"Disagree a lot" = 5; "Disagree" = 4; "Neutral" = 3; "Agree" = 2; "Agree a lot" = 1')
+dat$BFI35 <- car::recode(dat$BFI35, recodes = '"Disagree a lot" = 5; "Disagree" = 4; "Neutral" = 3; "Agree" = 2; "Agree a lot" = 1')
+dat$BFI41 <- car::recode(dat$BFI41, recodes = '"Disagree a lot" = 5; "Disagree" = 4; "Neutral" = 3; "Agree" = 2; "Agree a lot" = 1')
 ```
+
+# Create Subscales
+
+ #save variables in separate data frame
+```{r}
+library(tidyverse)
+
+dat$meanCRA <- rowMeans(select(dat,starts_with("CRA")))
+dat$meanHCRA<- rowMeans(select(dat,starts_with("HCRA")))
+
+dat$sumDS<- rowSums(select(dat, starts_with("DS")))
+dat$meanPSS<- rowMeans(select(dat, starts_with("PSS")))  
+dat$meanMQ<- rowMeans(select(dat, starts_with("MQ")))
+dat$sumExtraversion<- rowSums(select(dat,c(BFI1,BFI6,BFI11,BFI16,BFI21, BFI26, BFI31, BFI36)))
+dat$sumNeuroticism<- rowSums(select(dat, c(BFI4,BFI9, BFI14, BFI19, BFI24,BFI29, BFI34, BFI39)))
+```
+
