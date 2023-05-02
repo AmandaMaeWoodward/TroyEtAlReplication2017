@@ -1,0 +1,211 @@
+---
+title: "Troy et al (2017) Replication and Extension"
+author: "Amanda Mae Woodward"
+date: "2023-04-04"
+output: html_document
+---
+
+# Overview:
+
+We are replicating Troy et al (2017) as part of the Collaborative Replication Education Project (CREP). The original study examined whether socioeconomic status (SES) moderated the relationship between cognitive reappraisal ability (CRA) and depression symptosm. 
+
+We've also added extension hypothesis to better understand factors related to undergraduate students' mental health and cognitive reappraisal abilities. Specifically, we looked at: 
+
+- Does mindfulness impact the relationship between SES and depressive symptoms? (we think it may be a moderator or a mediator)
+- Does using a different measure of SES change whether it moderates the relationship between CRA and Depressive symptoms? 
+- Is there a relationship between neuroticism and CRA or between neuroticism and Depressive symptoms? (we think higher neuroticism will be associated with lower CRA and higher depressive symptoms)
+- Will the relationship betwen CRA and SES differ across groups? (we think it will differ)
+- Will the relationship between CRA and SES differ across gender? (we think it will differ)
+- Is there a relationship between extraversion and CRA with depressive symptoms? (higher extraversion will be associated with higher CRA and lower depressive symptoms) 
+
+# Load Data:
+```{r}
+datClean <- read.csv("~/Desktop/TroyetalCleaned.csv")
+```
+
+# Replication: 
+
+## Question 1: Does SES moderate the relationship between CRA and depressive symptoms
+
+### Hypothesis: We think we will find the same relationship as Troy et al (2017). 
+
+### Step 1: Descriptives and reliability:
+
+Here we calculate the descriptive statistics for the metric variables  
+
+```{r, message = FALSE,warning=FALSE}
+#For our analyses, we need several R packages.
+#The following function installs the packages if needed.
+
+packages <- c("tidyverse", "kableExtra", "psych", "janitor", "car", "performance", "see",
+              "gridExtra", "interactions", "devtools")
+
+if (length(setdiff(packages, rownames(installed.packages()))) > 0) {
+  install.packages(setdiff(packages, rownames(installed.packages())))  
+}
+
+devtools::install_github("crsh/papaja")
+devtools::install_github("easystats/report")
+
+# you might not need all these packages for your analysis!
+library("tidyverse")
+library("papaja") # for pretty tables  
+library("kableExtra") # tables
+library("psych")  # for cronbach's alpha
+library("janitor")  #for frequency tables
+library("car")      #for regression assumption tests
+library("performance")
+library("see")
+library("gridExtra")    #these 3 are needed for a comprehensive model check with graphs
+library("report") #for regression summary 
+library("interactions")  # for interaction plot of continuous predictors 
+
+# load data
+```
+
+```{r, message = FALSE, warning=FALSE}
+# means, sd, min, max
+# In the first step, the data are summarized to get the descriptive statistics.
+#Subsequently, the data are reformatted. 
+datClean$ses<- as.factor(datClean$ses)
+datClean$ses2<-datClean$ses
+levels(datClean$ses2)<- c(1,2,3,4,5,6,7,8,9,10,11,12)
+datClean$ses2<- as.numeric(datClean$ses2)
+
+descriptives <- datClean %>% 
+  summarize(across(c(ses2, meanCRA, meanPSS, meanHCRA, sumDS, age), 
+                   list(mean = mean, sd = sd, min = min, max = max))) %>% 
+# bring everything in long format
+  pivot_longer(everything(), names_to = "name") %>%   
+# separate names at last underscore
+  separate(name, into = c("name","descriptive"), sep = "_(?=[^_]+$)") %>%          
+# get into a bit wider format again
+  pivot_wider(names_from = name, values_from = value) %>%
+# rename to have nicer column names
+  rename(Summary = descriptive,  SES = ses2, CRA =  meanCRA,
+         HCRU= meanHCRA, PSS = meanPSS, CESD = sumDS) 
+
+descriptives
+
+# Calculate cronbach's alphas
+
+# Select the items from the raw data that belong to the specific scale.
+# calculate alpha and extract raw_alpha from the list the alpha function generates.
+alpha <- datClean %>% 
+  summarize(cra_alpha = select(.,starts_with("CRA")) %>% psych::alpha() %>% 
+              pluck("total", "raw_alpha"),  # extract total and then raw_alpha from list 
+            hcru_alpha = select(.,starts_with("HCRA")) %>% psych::alpha() %>% 
+              pluck("total", "raw_alpha"), 
+            cesd_alpha = select(.,starts_with("DS")) %>% psych::alpha() %>%
+              pluck("total", "raw_alpha"),
+            pss_alpha = select(.,starts_with("PSS")) %>% psych::alpha() %>%
+              pluck("total", "raw_alpha"))
+
+alpha 
+# add alphas as extra row to the descriptives table
+
+# make it a nicely formatted table
+  # is only shown when RMarkdown document is knitted
+```
+
+```{r, message = FALSE, warning=FALSE}
+# histogram of family income distribution
+income_plot<-ggplot(datClean, aes(ses))+ geom_bar()
+
+income_plot# Proportions of race and gender
+
+library(janitor)
+race_freq <- datClean %>% tabyl(raceEthnicity)                 
+race_freq
+#make separate frequency tables (janitor package)
+datClean$raceEthnicity2<-as.factor(datClean$raceEthnicity2)
+race_freq2 <- datClean %>% tabyl(raceEthnicity2)                 
+race_freq2
+gender_freq <- datClean %>% tabyl(gender)
+gender_freq
+
+```
+
+### 2. Mean center all IVs
+For regressions with interaction terms, we need to center the covariates, which means that we substract the mean from their values.
+```{r}
+scored_data2 <- datClean %>% 
+  mutate(CRA_c = scale(meanCRA, center = TRUE, scale = FALSE),     #only mean centered, not scaled
+         PSS_c = scale(meanPSS, center = TRUE, scale = FALSE),
+         HCRU_c = scale(meanHCRA, center = TRUE, scale = FALSE),
+         SES_c = scale(ses2, center = TRUE, scale = FALSE),
+          age_c = scale(age, center = TRUE, scale = FALSE))
+    
+#save scored data in a new file if needed (change path!)
+#write_csv(scored_data, "scored_data_troy.csv")                     
+```
+
+### 3. Calculate the regressions
+Now we model the multiple linear regression to determine the relationship between our variables and covariates.  
+We first only fit the models with the different predictors.  
+Then we check the assumptions of the main model of interest (first model, `fit`), then we look at the results of the first model and interpret the outcome  Finally, we compare the outcomes of the different models to see whether adding different covariates changes the results.   
+
+#### Fit the regression models:  
+```{r}
+#  Firstly our main regression:
+# We enter CRA and SES individually and the interaction between both
+fit <- lm(sumDS ~ PSS_c + CRA_c + SES_c + CRA_c:SES_c, data = scored_data2) 
+summary(fit)
+# Now we include our covariates individually:
+#HCRU
+fit_2 <- lm(sumDS~PSS_c + CRA_c + SES_c + CRA_c:SES_c + HCRU_c, data = scored_data2)  
+summary(fit_2)
+
+fit_3 <- lm(sumDS ~ PSS_c + CRA_c + SES_c + CRA_c:SES_c + age, data = scored_data2)   
+summary(fit_3)
+#gender
+fit_4 <- lm(sumDS ~ PSS_c + CRA_c + SES_c + CRA_c:SES_c + gender, data = scored_data2)   
+summary(fit_4)
+#race2 (dichotomous)
+fit_5 <- lm(sumDS ~ PSS_c + CRA_c + SES_c + CRA_c:SES_c + raceEthnicity2, data = scored_data2)    
+summary(fit_5)
+#They also modelled one regression without controlling for life stress (PSS):
+fit_6<-lm(sumDS~ CRA_c + SES_c + CRA_c:SES_c, data = scored_data2)
+summary(fit_6)
+```
+#### summarize regression outcomes
+```{r}
+# get the model summary:
+summary(fit) 
+
+#Generate a text report summarizing the results of our regression model.
+# (unfortunately not readable in the pdf - check out the html file or run the R-code)
+report(fit) #from "report" package                            
+
+# regression table in APA format
+apa_lm<-apa_print(fit)
+apa_table(apa_lm$table, caption = "Regression table for main model")
+
+```
+
+#### compare the different models
+
+It is possible to statistically compare two model fits - which hasn't been done in the paper. In case you want to do so, run this code:  
+```{r}
+anova(fit, fit_2)  
+anova(fit, fit_3)
+anova(fit, fit_4)
+anova(fit, fit_5)
+anova(fit, fit_6)
+```
+
+### 6. Interaction plot
+To visualize the interaction between CRA and SES, we want to draw an interaction plot.  
+```{r}
+#SES is entered as a moderator of the relationship between CRA and CES-D.
+interaction_plot <- interactions::interact_plot(model = fit, 
+                                                pred = CRA_c, 
+                                                modx = SES_c, 
+                                                interval=TRUE, 
+                                                x.label = "CRA", 
+                                                y.label= "CES-D",
+                                                legend.main = "SES")
+interaction_plot
+
+
+```
